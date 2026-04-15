@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roles SAGA</title>
+<title>Portal Subdirección de Archivos · ATTRAPI</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -22,6 +22,18 @@
   .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .hbtn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit; transition: background 0.15s; }
   .hbtn:hover { background: rgba(255,255,255,0.25); }
+  .intro { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+  .intro p { font-size: 14px; color: var(--text-sec); line-height: 1.6; margin-bottom: 1rem; }
+  .intro p strong { color: var(--text); font-weight: 600; }
+  .intro-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { background: var(--hover); color: var(--primary); border: 1px solid var(--border-strong); padding: 7px 14px; border-radius: 999px; font-size: 13px; cursor: pointer; font-family: inherit; transition: all 0.15s; font-weight: 500; }
+  .pill:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .footer-actions { display: flex; justify-content: center; gap: 8px; margin-top: 1.5rem; flex-wrap: wrap; }
+  .pill-footer { background: var(--surface); color: var(--primary); border: 1px solid var(--border-strong); padding: 8px 18px; border-radius: 999px; font-size: 13px; text-decoration: none; transition: all 0.15s; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+  .pill-footer:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .reminder { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
+  .reminder-pill { display: inline-flex; align-items: center; gap: 6px; background: #FFF8E1; color: #6B4408; border: 1px solid #F4D58A; padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.15s; }
+  .reminder-pill:hover { background: #F4D58A; color: #412402; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
   .stat { background: var(--surface); border-radius: 8px; padding: 1rem 1.25rem; border: 1px solid var(--border); }
   .stat-label { font-size: 12px; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
@@ -90,7 +102,7 @@
   <header>
     <div class="header-left">
       <div class="header-top">
-        <div class="logo">A</div>
+        <div class="logo">S</div>
         <div>
           <div class="kicker">Sistema Automatizado de Gestión de Archivos</div>
           <h1>Roles en SAGA</h1>
@@ -98,12 +110,19 @@
       </div>
       <p>Consulta interactiva de los roles por proceso · ATTRAPI</p>
     </div>
-    <div class="header-actions">
-      <button class="hbtn" id="btn-glosario">📖 Glosario</button>
-      <button class="hbtn" id="btn-sistema">⚙️ Roles de sistema</button>
-      <a class="hbtn" href="https://attrapi.github.io/Archivo-Institucional-actualizado/" target="_blank" rel="noopener" style="text-decoration: none;">📁 Archivo</a>
-    </div>
   </header>
+
+  <div class="reminder">
+    <a class="reminder-pill" href="https://attrapi.github.io/Archivo-Institucional-actualizado/" target="_blank" rel="noopener">📁 Abrir Archivo institucional →</a>
+  </div>
+
+  <div class="intro">
+    <p>Este sitio presenta los <strong>roles de proceso</strong> y <strong>roles de sistema</strong> que intervienen en el Sistema Automatizado de Gestión de Archivos (SAGA). Consulta las tarjetas para ver el flujo de cada procedimiento, o usa los botones para revisar el glosario de siglas y los roles de sistema HSC.</p>
+    <div class="intro-actions">
+      <button class="pill" id="btn-glosario">📖 Glosario de siglas</button>
+      <button class="pill" id="btn-sistema">⚙️ Roles de sistema HSC</button>
+    </div>
+  </div>
 
   <div class="stats">
     <div class="stat"><div class="stat-label">Procesos</div><div class="stat-value">30</div></div>
@@ -116,7 +135,7 @@
   <div class="results-count" id="results-count"></div>
   <div id="cards"></div>
   <div id="empty">No se encontraron resultados.</div>
-  <footer>Guía informativa institucional · SAGA · ATTRAPI<br>Última actualización: abril 2026</footer>
+  <footer>Subdirección de Archivos · ATTRAPI<br>Última actualización: abril 2026</footer>
 </div>
 
 <div class="modal-backdrop" id="modal-detail">
