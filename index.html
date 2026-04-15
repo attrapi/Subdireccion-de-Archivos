@@ -70,6 +70,15 @@
   .glosario-item { padding: 10px 14px; background: var(--hover); border-radius: 8px; border: 1px solid var(--border); }
   .glosario-term { font-weight: 600; font-size: 13px; color: var(--primary-mid); margin-bottom: 3px; }
   .glosario-def { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+  .sistema-item { display: flex; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; align-items: flex-start; }
+  .sistema-id { width: 36px; height: 36px; border-radius: 8px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex-shrink: 0; }
+  .sistema-id.operador { background: var(--primary-mid); }
+  .sistema-content { flex: 1; }
+  .sistema-name { font-weight: 500; font-size: 14px; color: var(--text); margin-bottom: 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .sistema-tag { font-size: 10px; padding: 2px 8px; border-radius: 999px; background: var(--hover); color: var(--primary-mid); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+  .sistema-desc { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+  .sistema-badge-detail { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--hover); border-radius: 8px; font-size: 12px; color: var(--text); margin-top: 8px; }
+  .sistema-badge-detail strong { color: var(--primary-mid); }
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 8px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
   .toast.show { opacity: 1; }
   footer { margin-top: 2.5rem; text-align: center; font-size: 12px; color: var(--text-ter); padding: 1rem; line-height: 1.6; }
@@ -91,6 +100,7 @@
     </div>
     <div class="header-actions">
       <button class="hbtn" id="btn-glosario">📖 Glosario</button>
+      <button class="hbtn" id="btn-sistema">⚙️ Roles de sistema</button>
     </div>
   </header>
 
@@ -133,6 +143,22 @@
       <div style="font-size: 13px; color: var(--text-sec); margin-top: 4px;">Abreviaturas usadas en los procesos institucionales</div>
     </div>
     <div class="modal-body"><div class="glosario-grid" id="glosario-grid"></div></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-sistema">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal('modal-sistema')">×</button>
+      <h2>⚙️ Roles de sistema HSC</h2>
+      <div style="font-size: 13px; color: var(--text-sec); margin-top: 4px;">Hotware Smart Cloud · Roles que se asignan al crear usuarios en SAGA</div>
+    </div>
+    <div class="modal-body">
+      <div style="background: var(--hover); padding: 12px 14px; border-radius: 8px; border-left: 3px solid var(--primary-mid); font-size: 13px; color: var(--text); margin-bottom: 1rem;">
+        <strong>Importante:</strong> los usuarios que participan en procedimientos de SAGA (solicitantes, autorizadores, validadores, etc.) usan el rol de sistema <strong>Operador (6)</strong>. Los demás roles son para personal técnico que administra, diseña o construye los procesos.
+      </div>
+      <div id="sistema-grid"></div>
+    </div>
   </div>
 </div>
 
@@ -184,6 +210,7 @@ const cats = {
 
 const glosario = [
   { term: "SAGA", def: "Sistema Automatizado de Gestión de Archivos" },
+  { term: "HSC", def: "Hotware Smart Cloud — plataforma sobre la que opera SAGA" },
   { term: "AT", def: "Archivo de Trámite — documentos de uso corriente" },
   { term: "AC", def: "Archivo de Concentración — documentos de consulta esporádica" },
   { term: "AH / RAH", def: "Archivo Histórico / Responsable del Archivo Histórico" },
@@ -198,6 +225,22 @@ const glosario = [
   { term: "e-AT / e-AC", def: "Consulta electrónica de expedientes en AT o AC" },
   { term: "HWSC", def: "Rol en atención de solicitudes por correo institucional" },
 ];
+
+const rolesSistema = [
+  { id: 1, name: "Super Administrador", desc: "Acceso total al sistema. Administración de proyectos, usuarios, roles, despliegues y configuración global." },
+  { id: 2, name: "Administrador de Proyecto", desc: "Gestión de procesos, roles y configuraciones dentro de un proyecto específico." },
+  { id: 3, name: "Consultor", desc: "Acceso de solo lectura a procesos y configuraciones del proyecto." },
+  { id: 4, name: "Arquitecto", desc: "Diseño y modelado de procesos BPMN dentro del proyecto." },
+  { id: 5, name: "Constructor", desc: "Construcción de formularios, reglas y componentes de los procesos." },
+  { id: 6, name: "Operador", desc: "Ejecución de procesos en el escritorio virtual. Es el rol para usuarios finales que participan en los procedimientos de SAGA.", esOperador: true },
+  { id: 7, name: "Tester", desc: "Pruebas de procesos en ambiente de construcción antes de su despliegue." },
+];
+
+// Mapeo: para procesos especiales (admin del sistema) se usa Super Administrador, el resto Operador
+function getRolSistema(proc) {
+  if (proc === "Administración y configuración del sistema") return rolesSistema[0]; // Super Administrador
+  return rolesSistema[5]; // Operador
+}
 
 function getRoleType(role) {
   const r = role.toLowerCase();
@@ -283,7 +326,8 @@ function openDetail(d) {
   const badge = document.getElementById("modal-badge");
   badge.textContent = c.label; badge.style.background = c.bg; badge.style.color = c.fg;
   document.getElementById("modal-title").textContent = d.proc;
-  document.getElementById("modal-subtitle").textContent = `${d.roles.length} rol${d.roles.length === 1 ? "" : "es"} en este proceso`;
+  const rs = getRolSistema(d.proc);
+  document.getElementById("modal-subtitle").innerHTML = `${d.roles.length} rol${d.roles.length === 1 ? "" : "es"} en este proceso · <span class="sistema-badge-detail" style="margin: 0; padding: 3px 10px; font-size: 12px;">⚙️ Rol HSC: <strong>${rs.name} (${rs.id})</strong></span>`;
   const flowEl = document.getElementById("modal-flow");
   const sorted = sortByFlow(d.roles);
   flowEl.innerHTML = sorted.map((role, i) => {
@@ -304,6 +348,20 @@ function openGlosario() {
   const grid = document.getElementById("glosario-grid");
   grid.innerHTML = glosario.map(g => `<div class="glosario-item"><div class="glosario-term">${g.term}</div><div class="glosario-def">${g.def}</div></div>`).join("");
   document.getElementById("modal-glosario").classList.add("show");
+}
+
+function openSistema() {
+  const grid = document.getElementById("sistema-grid");
+  grid.innerHTML = rolesSistema.map(r => `
+    <div class="sistema-item">
+      <div class="sistema-id ${r.esOperador ? 'operador' : ''}">${r.id}</div>
+      <div class="sistema-content">
+        <div class="sistema-name">${r.name}${r.esOperador ? '<span class="sistema-tag">Usuarios SAGA</span>' : ''}</div>
+        <div class="sistema-desc">${r.desc}</div>
+      </div>
+    </div>
+  `).join("");
+  document.getElementById("modal-sistema").classList.add("show");
 }
 
 function copyText(text, btn) {
@@ -328,6 +386,7 @@ if (urlCat && cats[urlCat]) activeCat = urlCat;
 
 searchEl.addEventListener("input", e => { search = e.target.value; render(); });
 document.getElementById("btn-glosario").onclick = openGlosario;
+document.getElementById("btn-sistema").onclick = openSistema;
 document.querySelectorAll(".modal-backdrop").forEach(m => { m.addEventListener("click", e => { if (e.target === m) m.classList.remove("show"); }); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".modal-backdrop.show").forEach(m => m.classList.remove("show")); });
 
