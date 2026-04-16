@@ -245,7 +245,7 @@ const data = [
   { cat: "prestamos", proc: "Seguimiento de consulta electrónica de expedientes AC", roles: ["Verificador de seguimiento de consulta de expedientes", "Solicitante de consulta de expedientes electrónicos", "Autorizador de seguimiento e-AC"], seq: { group: "consulta-e-ac", order: 2, arrowAfter: "bidirectional" } },
   { cat: "prestamos", proc: "Solicitud de refrendo de consulta e-AC", roles: ["Validador de solicitud de refrendo de plazo de consulta e-AC", "Solicitante de refrendo de plazo de consulta e-AC"], seq: { group: "consulta-e-ac", order: 3 } },
   { cat: "prestamos", proc: "Transferencia primaria", roles: ["Validador de transferencia primaria (UA)", "Responsable de Archivo de Trámite (RAT)", "Responsable de Archivo de Concentración (RAC)", "Coordinador de Archivo (CA)", "Área generadora (visto bueno)"], link: "Ampliación extraordinaria del plazo en AT por expediente" },
-  { cat: "prestamos", proc: "Transferencia secundaria archivo histórico institucional", roles: ["Validador de transferencia secundaria (UA)", "Responsable de Archivo de Concentración", "Receptor de transferencias (RAH)", "Coordinador de Archivo (CA)"] },
+  { cat: "prestamos", proc: "Transferencia secundaria archivo histórico institucional", roles: ["Validador de transferencia secundaria (UA)", "Responsable de Archivo de Concentración", "Receptor de transferencias (RAH)", "Coordinador de Archivo (CA)"], link: "Ampliación extraordinaria del plazo en AC por expediente" },
   // 4. Transferencias, Eliminación y Destino Final
   { cat: "transferencias", proc: "Reintegración de expedientes al archivo de trámite", roles: ["Autorizador de reintegración de expediente", "Solicitante de reintegración de expediente"] },
   { cat: "transferencias", proc: "Digitalización de expedientes físicos", roles: ["Digitalizador", "Validador de digitalización (UA)"] },
@@ -253,7 +253,7 @@ const data = [
   { cat: "transferencias", proc: "Glosa de documentos", roles: ["Solicitante de glosa de documentos", "Autorizador de glosa de documentos"] },
   { cat: "transferencias", proc: "Ampliación extraordinaria del plazo en AT por expediente", roles: ["Autorizador de ampliación de plazo en AT por expediente", "Solicitante de ampliación de plazo en AT por expediente (UA)"], link: "Transferencia primaria" },
   { cat: "transferencias", proc: "Generación de inventario general por expedientes trimestral", roles: ["Generador de inventario general por expedientes trimestral", "Validador de inventario general por expedientes trimestral", "Integrador de inventario general por expedientes trimestral", "Publicador de inventario general por expedientes trimestral"] },
-  { cat: "transferencias", proc: "Ampliación extraordinaria del plazo en AC por expediente", roles: ["Autorizador de ampliación de plazo en AC por expediente", "Solicitante de ampliación de plazo en AC por expediente"] },
+  { cat: "transferencias", proc: "Ampliación extraordinaria del plazo en AC por expediente", roles: ["Autorizador de ampliación de plazo en AC por expediente", "Solicitante de ampliación de plazo en AC por expediente"], link: "Transferencia secundaria archivo histórico institucional" },
   // 5. Otros
   { cat: "otros", proc: "Administración y configuración del sistema", roles: ["Administrador"] },
 ];
