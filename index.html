@@ -115,6 +115,10 @@
   .seq-arrow { display: flex; align-items: center; justify-content: center; width: 48px; flex-shrink: 0; position: relative; }
   .seq-arrow-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--primary-mid); }
   .seq-arrow-icon { position: relative; z-index: 1; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-mid), var(--primary)); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; box-shadow: 0 2px 8px rgba(12,68,124,0.25); flex-shrink: 0; }
+  /* Vínculo entre procesos de diferentes categorías */
+  .link-pill { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #E6F1FB, #EEEDFE); color: var(--primary); border: 1px solid var(--border-strong); padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; margin-top: 4px; }
+  .link-pill:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .link-pill-arrow { font-weight: 700; font-size: 14px; }
   @media (max-width: 768px) {
     .seq-flow { flex-direction: column; align-items: stretch; }
     .seq-flow .card { width: 100%; }
@@ -240,14 +244,14 @@ const data = [
   { cat: "prestamos", proc: "Consulta electrónica de expediente en AC", roles: ["Autorizador de consulta de expedientes", "Verificador de datos y firmas", "Solicitante de consulta electrónica AC"], seq: { group: "consulta-e-ac", order: 1, arrowAfter: "forward" } },
   { cat: "prestamos", proc: "Seguimiento de consulta electrónica de expedientes AC", roles: ["Verificador de seguimiento de consulta de expedientes", "Solicitante de consulta de expedientes electrónicos", "Autorizador de seguimiento e-AC"], seq: { group: "consulta-e-ac", order: 2, arrowAfter: "bidirectional" } },
   { cat: "prestamos", proc: "Solicitud de refrendo de consulta e-AC", roles: ["Validador de solicitud de refrendo de plazo de consulta e-AC", "Solicitante de refrendo de plazo de consulta e-AC"], seq: { group: "consulta-e-ac", order: 3 } },
-  { cat: "prestamos", proc: "Transferencia primaria", roles: ["Validador de transferencia primaria (UA)", "Responsable de Archivo de Trámite (RAT)", "Responsable de Archivo de Concentración (RAC)", "Coordinador de Archivo (CA)", "Área generadora (visto bueno)"] },
+  { cat: "prestamos", proc: "Transferencia primaria", roles: ["Validador de transferencia primaria (UA)", "Responsable de Archivo de Trámite (RAT)", "Responsable de Archivo de Concentración (RAC)", "Coordinador de Archivo (CA)", "Área generadora (visto bueno)"], link: "Ampliación extraordinaria del plazo en AT por expediente" },
   { cat: "prestamos", proc: "Transferencia secundaria archivo histórico institucional", roles: ["Validador de transferencia secundaria (UA)", "Responsable de Archivo de Concentración", "Receptor de transferencias (RAH)", "Coordinador de Archivo (CA)"] },
   // 4. Transferencias, Eliminación y Destino Final
   { cat: "transferencias", proc: "Reintegración de expedientes al archivo de trámite", roles: ["Autorizador de reintegración de expediente", "Solicitante de reintegración de expediente"] },
   { cat: "transferencias", proc: "Digitalización de expedientes físicos", roles: ["Digitalizador", "Validador de digitalización (UA)"] },
   { cat: "transferencias", proc: "Eliminación de DCAI", roles: ["Identificación de documentos", "Responsable de Archivo de Trámite (RAT)", "Validador de documentación (CA)", "Analizador de DCAI (AGN)"] },
   { cat: "transferencias", proc: "Glosa de documentos", roles: ["Solicitante de glosa de documentos", "Autorizador de glosa de documentos"] },
-  { cat: "transferencias", proc: "Ampliación extraordinaria del plazo en AT por expediente", roles: ["Autorizador de ampliación de plazo en AT por expediente", "Solicitante de ampliación de plazo en AT por expediente (UA)"] },
+  { cat: "transferencias", proc: "Ampliación extraordinaria del plazo en AT por expediente", roles: ["Autorizador de ampliación de plazo en AT por expediente", "Solicitante de ampliación de plazo en AT por expediente (UA)"], link: "Transferencia primaria" },
   { cat: "transferencias", proc: "Generación de inventario general por expedientes trimestral", roles: ["Generador de inventario general por expedientes trimestral", "Validador de inventario general por expedientes trimestral", "Integrador de inventario general por expedientes trimestral", "Publicador de inventario general por expedientes trimestral"] },
   // 5. Otros
   { cat: "otros", proc: "Administración y configuración del sistema", roles: ["Administrador"] },
@@ -385,6 +389,21 @@ function render() {
   });
 }
 
+function buildLinkHtml(d) {
+  if (!d.link) return "";
+  return `<div class="link-pill" data-link="${d.link.replace(/"/g, '&quot;')}"><span class="link-pill-arrow">⇄</span> ${d.link}</div>`;
+}
+
+function bindLinkClick(el) {
+  el.querySelectorAll(".link-pill").forEach(pill => {
+    pill.addEventListener("click", e => {
+      e.stopPropagation();
+      const target = data.find(d => d.proc === pill.dataset.link);
+      if (target) openDetail(target);
+    });
+  });
+}
+
 function renderCard(d, q, idx) {
   const c = cats[d.cat];
   const card = document.createElement("div");
@@ -395,8 +414,9 @@ function renderCard(d, q, idx) {
     const safe = role.replace(/'/g, "\\'").replace(/"/g, "&quot;");
     return `<li><span class="role-icon" style="background:${rt.bg}; color:${rt.fg};" title="${rt.type}">${rt.icon}</span><span class="role-text">${highlight(role, q)}</span><button class="copy-btn" onclick="event.stopPropagation(); copyText('${safe}', this)" title="Copiar">📋</button></li>`;
   }).join("");
-  card.innerHTML = `<div><span class="badge" style="background:${c.bg}; color:${c.fg};">${c.label}</span></div><div class="proc-title">${highlight(d.proc, q)}</div><ul class="roles-list">${rolesHtml}</ul><div class="count">${d.roles.length} rol${d.roles.length === 1 ? "" : "es"} · Clic para ver flujo</div>`;
+  card.innerHTML = `<div><span class="badge" style="background:${c.bg}; color:${c.fg};">${c.label}</span></div><div class="proc-title">${highlight(d.proc, q)}</div><ul class="roles-list">${rolesHtml}</ul>${buildLinkHtml(d)}<div class="count">${d.roles.length} rol${d.roles.length === 1 ? "" : "es"} · Clic para ver flujo</div>`;
   card.onclick = () => openDetail(d);
+  bindLinkClick(card);
   cardsEl.appendChild(card);
 }
 
@@ -419,8 +439,9 @@ function renderSeqBlock(seqItems, q, baseIdx) {
       const safe = role.replace(/'/g, "\\'").replace(/"/g, "&quot;");
       return `<li><span class="role-icon" style="background:${rt.bg}; color:${rt.fg};" title="${rt.type}">${rt.icon}</span><span class="role-text">${highlight(role, q)}</span><button class="copy-btn" onclick="event.stopPropagation(); copyText('${safe}', this)" title="Copiar">📋</button></li>`;
     }).join("");
-    card.innerHTML = `<div><span class="badge" style="background:${c.bg}; color:${c.fg};">${c.label}</span></div><div class="proc-title">${highlight(d.proc, q)}</div><ul class="roles-list">${rolesHtml}</ul><div class="count">${d.roles.length} rol${d.roles.length === 1 ? "" : "es"} · Clic para ver flujo</div>`;
+    card.innerHTML = `<div><span class="badge" style="background:${c.bg}; color:${c.fg};">${c.label}</span></div><div class="proc-title">${highlight(d.proc, q)}</div><ul class="roles-list">${rolesHtml}</ul>${buildLinkHtml(d)}<div class="count">${d.roles.length} rol${d.roles.length === 1 ? "" : "es"} · Clic para ver flujo</div>`;
     card.onclick = () => openDetail(d);
+    bindLinkClick(card);
     flow.appendChild(card);
 
     // Agregar conector si hay flecha después
