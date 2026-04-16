@@ -22,6 +22,21 @@
   .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .hbtn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit; transition: background 0.15s; }
   .hbtn:hover { background: rgba(255,255,255,0.25); }
+  .saga-block { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0; margin-bottom: 1.5rem; overflow: hidden; }
+  .saga-header { background: linear-gradient(135deg, #0a3a6b 0%, #1a6db5 100%); color: white; padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .saga-header h2 { font-size: 20px; font-weight: 600; letter-spacing: 1.5px; }
+  .saga-header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .saga-header-actions .pill { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); }
+  .saga-header-actions .pill:hover { background: rgba(255,255,255,0.3); color: white; border-color: rgba(255,255,255,0.5); }
+  .saga-body { padding: 1.25rem 1.5rem; }
+  .saga-body p { font-size: 14px; color: var(--text-sec); line-height: 1.6; margin-bottom: 1rem; }
+  .saga-body p strong { color: var(--text); font-weight: 600; }
+  .saga-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1rem; }
+  .saga-stat { background: var(--bg); border-radius: 10px; padding: 0.9rem 1rem; text-align: center; border: 1px solid var(--border); }
+  .saga-stat-value { font-size: 28px; font-weight: 600; color: var(--primary-mid); }
+  .saga-stat-label { font-size: 11px; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .saga-search { width: 100%; padding: 10px 14px; font-size: 14px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg); color: var(--text); outline: none; font-family: inherit; margin-bottom: 1rem; }
+  .saga-search:focus { border-color: var(--primary-mid); box-shadow: 0 0 0 3px rgba(24, 95, 165, 0.15); }
   .intro { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
   .intro p { font-size: 14px; color: var(--text-sec); line-height: 1.6; margin-bottom: 1rem; }
   .intro p strong { color: var(--text); font-weight: 600; }
@@ -116,24 +131,26 @@
     <a class="reminder-pill" style="background:#F1EFE8; color:#2C2C2A; border-color:#888780;" href="https://attrapi.github.io/Archivo-Institucional-actualizado/" target="_blank" rel="noopener">🏛️ Administración →</a>
   </div>
 
-  <div class="intro">
-    <h2 style="font-size:18px; font-weight:600; color:var(--primary); margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid var(--primary);">SAGA</h2>
-    <p>Este sitio presenta los <strong>roles de proceso</strong> y <strong>roles de sistema</strong> que intervienen en el Sistema Automatizado de Gestión de Archivos (SAGA). Consulta las tarjetas para ver el flujo de cada procedimiento, o usa los botones para revisar el glosario de siglas y los roles de sistema HSC.</p>
-    <div class="intro-actions">
-      <button class="pill" id="btn-glosario">📖 Glosario de siglas</button>
-      <button class="pill" id="btn-sistema">⚙️ Roles de sistema HSC</button>
-      <a class="pill" href="Guia_Operativa_SAGA_Completa.pdf" target="_blank" rel="noopener" style="text-decoration:none; display:inline-flex; align-items:center;">📋 Guía Operativa SAGA</a>
+  <div class="saga-block">
+    <div class="saga-header">
+      <h2>SAGA</h2>
+      <div class="saga-header-actions">
+        <button class="pill" id="btn-glosario">📖 Glosario de siglas</button>
+        <button class="pill" id="btn-sistema">⚙️ Roles de sistema HSC</button>
+        <a class="pill" href="Guia_Operativa_SAGA_Completa.pdf" target="_blank" rel="noopener" style="text-decoration:none; display:inline-flex; align-items:center;">📋 Guía Operativa</a>
+      </div>
+    </div>
+    <div class="saga-body">
+      <p>Este sitio presenta los <strong>roles de proceso</strong> y <strong>roles de sistema</strong> que intervienen en el Sistema Automatizado de Gestión de Archivos (SAGA). Consulta las tarjetas para ver el flujo de cada procedimiento, o usa los botones para revisar el glosario de siglas y los roles de sistema HSC.</p>
+      <div class="saga-stats">
+        <div class="saga-stat"><div class="saga-stat-value">30</div><div class="saga-stat-label">Procesos</div></div>
+        <div class="saga-stat"><div class="saga-stat-value">87</div><div class="saga-stat-label">Roles totales</div></div>
+        <div class="saga-stat"><div class="saga-stat-value">7</div><div class="saga-stat-label">Categorías</div></div>
+      </div>
+      <input type="text" id="search" class="saga-search" placeholder="🔍 Buscar proceso o rol…">
+      <div id="filters"></div>
     </div>
   </div>
-
-  <div class="stats">
-    <div class="stat"><div class="stat-label">Procesos</div><div class="stat-value">30</div></div>
-    <div class="stat"><div class="stat-label">Roles totales</div><div class="stat-value">87</div></div>
-    <div class="stat"><div class="stat-label">Categorías</div><div class="stat-value">7</div></div>
-  </div>
-
-  <div class="controls"><input type="text" id="search" placeholder="🔍 Buscar proceso o rol…"></div>
-  <div id="filters"></div>
   <div class="results-count" id="results-count"></div>
   <div id="cards"></div>
   <div id="empty">No se encontraron resultados.</div>
