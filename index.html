@@ -110,29 +110,17 @@
   .toast.show { opacity: 1; }
   footer { margin-top: 2.5rem; text-align: center; font-size: 12px; color: var(--text-ter); padding: 1rem; line-height: 1.6; }
   /* Secuencias conectadas */
-  .seq-block { grid-column: 1 / -1; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; opacity: 0; animation: fadeUp 0.4s ease-out forwards; }
-  .seq-label { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-sec); margin-bottom: 1rem; }
-  .seq-label-icon { width: 22px; height: 22px; border-radius: 6px; background: var(--primary); color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; }
-  .seq-pipeline { display: flex; align-items: stretch; gap: 0; position: relative; }
-  .seq-node { flex: 1; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
-  .seq-node:hover { transform: translateY(-2px); z-index: 2; }
-  .seq-node:hover .seq-node-card { box-shadow: 0 6px 20px rgba(0,0,0,0.1); border-color: var(--primary-mid); }
-  .seq-node-card { background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem; flex: 1; display: flex; flex-direction: column; gap: 8px; transition: all 0.15s; }
-  .seq-node-header { display: flex; align-items: center; gap: 8px; }
-  .seq-node-num { width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: white; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .seq-node-badge { font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
-  .seq-node-title { font-size: 14px; font-weight: 500; line-height: 1.35; color: var(--text); }
-  .seq-node-roles { font-size: 12px; color: var(--text-sec); margin-top: auto; padding-top: 6px; border-top: 1px solid var(--border); }
-  .seq-connector { display: flex; align-items: center; justify-content: center; width: 44px; flex-shrink: 0; position: relative; }
-  .seq-connector-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--primary-mid), var(--primary)); }
-  .seq-connector-arrow { position: relative; z-index: 1; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-mid), var(--primary)); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 8px rgba(12,68,124,0.3); }
-  .seq-node-click { font-size: 11px; color: var(--text-ter); text-align: center; margin-top: 6px; }
+  .seq-flow { grid-column: 1 / -1; display: flex; align-items: stretch; gap: 0; }
+  .seq-flow .card { flex: 1; min-width: 0; margin: 0; }
+  .seq-arrow { display: flex; align-items: center; justify-content: center; width: 48px; flex-shrink: 0; position: relative; }
+  .seq-arrow-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--primary-mid); }
+  .seq-arrow-icon { position: relative; z-index: 1; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-mid), var(--primary)); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; box-shadow: 0 2px 8px rgba(12,68,124,0.25); flex-shrink: 0; }
   @media (max-width: 768px) {
-    .seq-pipeline { flex-direction: column; align-items: center; }
-    .seq-node { width: 100%; }
-    .seq-connector { width: auto; height: 36px; }
-    .seq-connector-line { top: 0; bottom: 0; left: 50%; width: 2px; height: 100%; right: auto; }
-    .seq-connector-arrow { transform: rotate(90deg); }
+    .seq-flow { flex-direction: column; align-items: stretch; }
+    .seq-flow .card { width: 100%; }
+    .seq-arrow { width: 100%; height: 40px; }
+    .seq-arrow-line { top: 0; bottom: 0; left: 50%; right: auto; width: 2px; height: 100%; }
+    .seq-arrow-icon { transform: rotate(90deg); }
   }
   @media (max-width: 600px) { body { padding: 1rem 0.5rem; } header { padding: 1.5rem; } header h1 { font-size: 22px; } }
 </style>
@@ -240,9 +228,9 @@ const data = [
   { cat: "instrumentos", proc: "Modificación del cuadro general de clasificación archivística", roles: ["Editor del CGCA", "Autorizador de modificación del CGCA"] },
   { cat: "instrumentos", proc: "Modificación del catálogo de disposición documental", roles: ["Gestor de valores documentales", "Analizador documental", "Autorizador de catálogo de disposición documental"] },
   // 3. Préstamos y Consultas
-  { cat: "prestamos", proc: "Seguimiento de préstamo y consulta de expedientes AT", roles: ["Solicitante de préstamo o consulta de expedientes (UA)", "Verificador de seguimiento de préstamo de expedientes", "Autorizador de seguimiento"], seq: { group: "prestamo-consulta-at", order: 1, label: "Flujo de préstamo y consulta AT" } },
-  { cat: "prestamos", proc: "Préstamo y consulta de expedientes AT", roles: ["Verificador de datos y firmas (RAT)", "Autorizador de préstamo o consulta de expedientes", "Solicitante de préstamo o consulta de expedientes (UA)"], seq: { group: "prestamo-consulta-at", order: 2, label: "Flujo de préstamo y consulta AT" } },
-  { cat: "prestamos", proc: "Solicitud de refrendo de préstamo y consulta AT", roles: ["Validador de solicitud de refrendo de plazo de préstamo y consulta de AT", "Solicitante de refrendo de préstamo y consulta de expediente (UA)"], seq: { group: "prestamo-consulta-at", order: 3, label: "Flujo de préstamo y consulta AT" } },
+  { cat: "prestamos", proc: "Préstamo y consulta de expedientes AT", roles: ["Verificador de datos y firmas (RAT)", "Autorizador de préstamo o consulta de expedientes", "Solicitante de préstamo o consulta de expedientes (UA)"], seq: { group: "prestamo-consulta-at", order: 1, arrowAfter: "forward" } },
+  { cat: "prestamos", proc: "Seguimiento de préstamo y consulta de expedientes AT", roles: ["Solicitante de préstamo o consulta de expedientes (UA)", "Verificador de seguimiento de préstamo de expedientes", "Autorizador de seguimiento"], seq: { group: "prestamo-consulta-at", order: 2, arrowAfter: "bidirectional" } },
+  { cat: "prestamos", proc: "Solicitud de refrendo de préstamo y consulta AT", roles: ["Validador de solicitud de refrendo de plazo de préstamo y consulta de AT", "Solicitante de refrendo de préstamo y consulta de expediente (UA)"], seq: { group: "prestamo-consulta-at", order: 3 } },
   { cat: "prestamos", proc: "Seguimiento de consulta electrónica de expedientes AT", roles: ["Verificador de seguimiento de consulta de expediente", "Solicitante de consulta de expediente", "Autorizador de seguimiento"] },
   { cat: "prestamos", proc: "Consulta electrónica de expedientes en AT", roles: ["Solicitante de consulta electrónica", "Verificador de datos y firmas", "Autorizador de consulta de expedientes"] },
   { cat: "prestamos", proc: "Solicitud de refrendo de consulta e-AT", roles: ["Validador de solicitud de refrendo de consulta e-AT", "Solicitante de refrendo de plazo de consulta e-AT"] },
@@ -413,43 +401,39 @@ function renderCard(d, q, idx) {
 }
 
 function renderSeqBlock(seqItems, q, baseIdx) {
-  const c = cats[seqItems[0].cat];
-  const block = document.createElement("div");
-  block.className = "seq-block";
-  block.style.animationDelay = `${Math.min(baseIdx * 30, 400)}ms`;
-
-  const label = seqItems[0].seq.label || "Secuencia de procesos";
-  let html = `<div class="seq-label"><span class="seq-label-icon">⟿</span> ${label} <span class="badge" style="background:${c.bg}; color:${c.fg}; font-size:10px;">${c.label}</span></div>`;
-  html += `<div class="seq-pipeline">`;
+  const flow = document.createElement("div");
+  flow.className = "seq-flow";
+  flow.style.animationDelay = `${Math.min(baseIdx * 30, 400)}ms`;
+  flow.style.opacity = "0";
+  flow.style.animation = "fadeUp 0.4s ease-out forwards";
 
   seqItems.forEach((d, i) => {
-    const totalRoles = d.roles.length;
-    html += `<div class="seq-node" data-seq-idx="${i}">
-      <div class="seq-node-card">
-        <div class="seq-node-header">
-          <div class="seq-node-num">${d.seq.order}</div>
-          <span class="seq-node-badge" style="background:${c.bg}; color:${c.fg};">Paso ${d.seq.order}</span>
-        </div>
-        <div class="seq-node-title">${highlight(d.proc, q)}</div>
-        <div class="seq-node-roles">${totalRoles} rol${totalRoles === 1 ? "" : "es"}</div>
-      </div>
-      <div class="seq-node-click">Clic para detalle</div>
-    </div>`;
-    if (i < seqItems.length - 1) {
-      html += `<div class="seq-connector"><div class="seq-connector-line"></div><div class="seq-connector-arrow">→</div></div>`;
+    // Crear tarjeta normal
+    const c = cats[d.cat];
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.animation = "none";
+    card.style.opacity = "1";
+    const rolesHtml = d.roles.map(role => {
+      const rt = getRoleType(role);
+      const safe = role.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      return `<li><span class="role-icon" style="background:${rt.bg}; color:${rt.fg};" title="${rt.type}">${rt.icon}</span><span class="role-text">${highlight(role, q)}</span><button class="copy-btn" onclick="event.stopPropagation(); copyText('${safe}', this)" title="Copiar">📋</button></li>`;
+    }).join("");
+    card.innerHTML = `<div><span class="badge" style="background:${c.bg}; color:${c.fg};">${c.label}</span></div><div class="proc-title">${highlight(d.proc, q)}</div><ul class="roles-list">${rolesHtml}</ul><div class="count">${d.roles.length} rol${d.roles.length === 1 ? "" : "es"} · Clic para ver flujo</div>`;
+    card.onclick = () => openDetail(d);
+    flow.appendChild(card);
+
+    // Agregar conector si hay flecha después
+    if (d.seq.arrowAfter) {
+      const arrow = document.createElement("div");
+      arrow.className = "seq-arrow";
+      const symbol = d.seq.arrowAfter === "bidirectional" ? "⇄" : "→";
+      arrow.innerHTML = `<div class="seq-arrow-line"></div><div class="seq-arrow-icon">${symbol}</div>`;
+      flow.appendChild(arrow);
     }
   });
 
-  html += `</div>`;
-  block.innerHTML = html;
-
-  // Bind click events
-  block.querySelectorAll(".seq-node").forEach(node => {
-    const i = parseInt(node.dataset.seqIdx);
-    node.onclick = () => openDetail(seqItems[i]);
-  });
-
-  cardsEl.appendChild(block);
+  cardsEl.appendChild(flow);
 }
 
 function openDetail(d) {
