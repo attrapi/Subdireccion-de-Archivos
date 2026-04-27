@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portal Subdirección de Archivos · ATTRAPI</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='8' y='14' width='48' height='40' rx='3' fill='%230C447C'/><rect x='12' y='18' width='40' height='32' rx='2' fill='%23185FA5'/><rect x='22' y='8' width='20' height='10' rx='2' fill='%230C447C'/><rect x='18' y='28' width='28' height='4' rx='1' fill='%23E6F1FB'/><rect x='18' y='35' width='20' height='3' rx='1' fill='%23E6F1FB' opacity='0.6'/><rect x='18' y='41' width='24' height='3' rx='1' fill='%23E6F1FB' opacity='0.4'/></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='8' y='14' width='48' height='40' rx='3' fill='%23691c32'/><rect x='12' y='18' width='40' height='32' rx='2' fill='%238B2A44'/><rect x='22' y='8' width='20' height='10' rx='2' fill='%23691c32'/><rect x='18' y='28' width='28' height='4' rx='1' fill='%23F5E6EA'/><rect x='18' y='35' width='20' height='3' rx='1' fill='%23F5E6EA' opacity='0.6'/><rect x='18' y='41' width='24' height='3' rx='1' fill='%23F5E6EA' opacity='0.4'/></svg>">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg: #F4F7FB; --surface: #FFFFFF; --text: #0E2A47; --text-sec: #4A6A8A; --text-ter: #8AA0B8;
-    --border: #DCE6F0; --border-strong: #BDD0E3; --primary: #0C447C; --primary-mid: #185FA5; --hover: #E6F1FB;
+    --border: #DCE6F0; --border-strong: #BDD0E3; --primary: #691c32; --primary-mid: #8B2A44; --hover: #F5E6EA;
   }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 2rem 1rem; transition: background 0.2s, color 0.2s; }
   .container { max-width: 1200px; margin: 0 auto; }
-  header { background: linear-gradient(135deg, #0C447C, #185FA5); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+  header { background: linear-gradient(135deg, #691c32, #8B2A44); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
   .header-left { flex: 1; min-width: 220px; }
   .header-top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
   .logo { width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; border: 1.5px solid rgba(255,255,255,0.3); }
@@ -24,7 +24,7 @@
   .hbtn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit; transition: background 0.15s; }
   .hbtn:hover { background: rgba(255,255,255,0.25); }
   .saga-block { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0; margin-bottom: 1.5rem; overflow: hidden; }
-  .saga-header { background: linear-gradient(135deg, #0a3a6b 0%, #1a6db5 100%); color: white; padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .saga-header { background: linear-gradient(135deg, #4A1224 0%, #8B2A44 100%); color: white; padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
   .saga-header h2 { font-size: 20px; font-weight: 600; letter-spacing: 1.5px; }
   .saga-header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .saga-header-actions .pill { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); }
@@ -37,7 +37,7 @@
   .saga-stat-value { font-size: 28px; font-weight: 600; color: var(--primary-mid); }
   .saga-stat-label { font-size: 11px; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
   .saga-search { width: 100%; padding: 10px 14px; font-size: 14px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg); color: var(--text); outline: none; font-family: inherit; margin-bottom: 1rem; }
-  .saga-search:focus { border-color: var(--primary-mid); box-shadow: 0 0 0 3px rgba(24, 95, 165, 0.15); }
+  .saga-search:focus { border-color: var(--primary-mid); box-shadow: 0 0 0 3px rgba(105, 28, 50, 0.15); }
   .intro { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
   .intro p { font-size: 14px; color: var(--text-sec); line-height: 1.6; margin-bottom: 1rem; }
   .intro p strong { color: var(--text); font-weight: 600; }
@@ -56,7 +56,7 @@
   .stat-value { font-size: 26px; font-weight: 500; color: var(--primary-mid); }
   .controls { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
   #search { flex: 1; min-width: 240px; padding: 10px 14px; font-size: 14px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--surface); color: var(--text); outline: none; font-family: inherit; }
-  #search:focus { border-color: var(--primary-mid); box-shadow: 0 0 0 3px rgba(24, 95, 165, 0.15); }
+  #search:focus { border-color: var(--primary-mid); box-shadow: 0 0 0 3px rgba(105, 28, 50, 0.15); }
   #filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
   .filter-btn { font-size: 13px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-sec); cursor: pointer; font-family: inherit; transition: all 0.15s; }
   .filter-btn:hover { border-color: var(--text-ter); }
@@ -115,9 +115,9 @@
   .seq-flow .card { flex: 1; min-width: 0; margin: 0; }
   .seq-arrow { display: flex; align-items: center; justify-content: center; width: 48px; flex-shrink: 0; position: relative; }
   .seq-arrow-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--primary-mid); }
-  .seq-arrow-icon { position: relative; z-index: 1; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-mid), var(--primary)); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; box-shadow: 0 2px 8px rgba(12,68,124,0.25); flex-shrink: 0; }
+  .seq-arrow-icon { position: relative; z-index: 1; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-mid), var(--primary)); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; box-shadow: 0 2px 8px rgba(105,28,50,0.25); flex-shrink: 0; }
   /* Vínculo entre procesos de diferentes categorías */
-  .link-pill { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #E6F1FB, #EEEDFE); color: var(--primary); border: 1px solid var(--border-strong); padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; margin-top: 4px; }
+  .link-pill { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #F5E6EA, #EEEDFE); color: var(--primary); border: 1px solid var(--border-strong); padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; margin-top: 4px; }
   .link-pill:hover { background: var(--primary); color: white; border-color: var(--primary); }
   .link-pill-arrow { font-weight: 700; font-size: 14px; }
   @media (max-width: 768px) {
@@ -145,7 +145,7 @@
   </header>
 
   <div class="reminder">
-    <a class="reminder-pill" style="background:#E6F1FB; color:#042C53; border-color:#378ADD;" href="https://attrapi.github.io/Archivo-Institucional/" target="_blank" rel="noopener">📁 Abrir Archivo institucional →</a>
+    <a class="reminder-pill" style="background:#F5E6EA; color:#2A0B14; border-color:#B05A6E;" href="https://attrapi.github.io/Archivo-Institucional/" target="_blank" rel="noopener">📁 Abrir Archivo institucional →</a>
   </div>
 
   <div class="saga-block">
@@ -334,7 +334,7 @@ function renderFilters() {
     const c = cats[f.key];
     if (c) { btn.style.background = c.bg; btn.style.color = c.fg; btn.style.borderColor = c.border; }
     if (activeCat === f.key && c) { btn.style.fontWeight = "700"; }
-    else if (activeCat === f.key) { btn.style.background = "#0C447C"; btn.style.color = "white"; btn.style.borderColor = "#0C447C"; }
+    else if (activeCat === f.key) { btn.style.background = "#691c32"; btn.style.color = "white"; btn.style.borderColor = "#691c32"; }
     btn.onclick = () => {
       activeCat = f.key;
       try {
